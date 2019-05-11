@@ -12,3 +12,6 @@ GET         /assets/*file        controllers.Assets.versioned(path="/public", fi
 
 GET         /customers           controllers.CustomerController.index
 POST        /customers           controllers.CustomerController.create
+
+GET         /products            controllers.ProductController.index
+POST        /products            controllers.ProductController.create
