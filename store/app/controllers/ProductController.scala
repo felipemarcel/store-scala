@@ -41,8 +41,8 @@ class ProductController @Inject()(components: ControllerComponents, val reactive
     val futureProductsList: Future[List[JsObject]] =
       cursor.flatMap(_.collect[List](-1, Cursor.FailOnError[List[JsObject]]()))
 
-    val futureProductsJsonArray: Future[JsArray] =
-      futureProductsList.map { products => Json.arr(products) }
+    val futureProductsJsonArray: Future [JsArray] =
+      futureProductsList.map { products => JsArray(products) }
 
     futureProductsJsonArray.map { products =>
       Ok(products)

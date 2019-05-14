@@ -42,7 +42,7 @@ class CustomerController @Inject()(components: ControllerComponents, val reactiv
       cursor.flatMap(_.collect[List](-1, Cursor.FailOnError[List[JsObject]]()))
 
     val futureCustomersJsonArray: Future[JsArray] =
-      futureCustomersList.map { customers => Json.arr(customers) }
+      futureCustomersList.map { customers => JsArray(customers) }
 
     futureCustomersJsonArray.map { customers =>
       Ok(customers)
