@@ -6,6 +6,7 @@ import dataProvider from './DataProvider';
 import './App.css';
 import {CustomerList} from "./CustomerComponents/CustomerList";
 import {ProductList} from "./ProductComponents/ProductList";
+import {OrderStoreList} from "./OrderComponents/OrderStoreList";
 
 class App extends Component {
     render() {
@@ -18,6 +19,11 @@ class App extends Component {
                     name="customers"
                     options={{label: "Clientes"}}
                     list={CustomerList}
+                />
+                <Resource
+                    name="orders"
+                    options={{label: "Compras"}}
+                    list={OrderStoreList}
                 />
                 <Resource
                     name="products"

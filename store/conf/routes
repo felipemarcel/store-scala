@@ -15,3 +15,6 @@ POST        /customers           controllers.CustomerController.create
 
 GET         /products            controllers.ProductController.index
 POST        /products            controllers.ProductController.create
+
+GET         /orders              controllers.OrderStoreController.index
+POST        /orders              controllers.OrderStoreController.create
