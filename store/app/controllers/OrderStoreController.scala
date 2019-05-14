@@ -42,7 +42,7 @@ class OrderStoreController @Inject()(components: ControllerComponents, val react
       cursor.flatMap(_.collect[List](-1, Cursor.FailOnError[List[JsObject]]()))
 
     val futureOrderStoresJsonArray: Future[JsArray] =
-      futureOrderStoresList.map { orderStores => Json.arr(orderStores) }
+      futureOrderStoresList.map { orderStores => JsArray(orderStores) }
 
     futureOrderStoresJsonArray.map { orderStores =>
       Ok(orderStores)
