@@ -3,6 +3,7 @@ import {
     Datagrid,
     List,
     TextField,
+    ArrayField
 } from 'react-admin';
 
 

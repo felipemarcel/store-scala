@@ -13,6 +13,8 @@ import play.api.libs.json._
 
 import reactivemongo.api.Cursor
 import reactivemongo.api.ReadPreference
+import reactivemongo.play.json._
+import reactivemongo.bson.{BSONObjectID, BSONDocument}
 
 import play.modules.reactivemongo.{
   MongoController,
@@ -56,6 +58,21 @@ class CustomerController @Inject()(components: ControllerComponents, val reactiv
         Created
       }
     }.getOrElse(Future.successful(BadRequest("invalid json")))
+  }
+
+  def findById(id: String) = Action.async {
+    val objId = BSONObjectID.parse(id).get
+
+    def futureCustomer: Future[Option[Customer]] = collection.flatMap(
+      _.find(Json.obj("_id" -> objId)).one[Customer])
+
+    futureCustomer.map { customer =>
+      customer match {
+        case Some(customer) => Ok(Json.toJson(customer))
+        case None => NotFound(Json.obj("message" -> "Não existe cliente com este id!"))
+      }
+    }
+
   }
 
 }

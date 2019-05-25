@@ -11,8 +11,10 @@ import play.api.Logger
 import play.api.mvc.{AbstractController, ControllerComponents}
 import play.api.libs.json._
 
+import reactivemongo.bson.{BSONObjectID, BSONDocument}
 import reactivemongo.api.Cursor
 import reactivemongo.api.ReadPreference
+import reactivemongo.play.json._
 
 import play.modules.reactivemongo.{
   MongoController,
@@ -41,7 +43,7 @@ class ProductController @Inject()(components: ControllerComponents, val reactive
     val futureProductsList: Future[List[JsObject]] =
       cursor.flatMap(_.collect[List](-1, Cursor.FailOnError[List[JsObject]]()))
 
-    val futureProductsJsonArray: Future [JsArray] =
+    val futureProductsJsonArray: Future[JsArray] =
       futureProductsList.map { products => JsArray(products) }
 
     futureProductsJsonArray.map { products =>
@@ -58,4 +60,18 @@ class ProductController @Inject()(components: ControllerComponents, val reactive
     }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
 
+  def findById(id: String) = Action.async {
+    val objId = BSONObjectID.parse(id).get
+
+    def futureProduct: Future[Option[Product]] = collection.flatMap(
+      _.find(Json.obj("_id" -> objId)).one[Product])
+
+    futureProduct.map { product =>
+      product match {
+        case Some(product) => Ok(Json.toJson(product))
+        case None => NotFound(Json.obj("message" -> "Não existe produto com este id!"))
+      }
+    }
+
+  }
 }

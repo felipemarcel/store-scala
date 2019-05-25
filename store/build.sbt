@@ -14,6 +14,7 @@ libraryDependencies ++= Seq(
   "org.reactivemongo" %% "play2-reactivemongo" % "0.16.6-play27"
 )
 
+routesGenerator := InjectedRoutesGenerator
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.felipemarcel.controllers._"
 

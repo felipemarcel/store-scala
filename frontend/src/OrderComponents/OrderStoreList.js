@@ -18,8 +18,8 @@ export const OrderStoreList = ({...props}) => {
                 <ArrayField source="products" label="Produtos">
                     <Datagrid>
                         <TextField source="quantity" label="Quantidade"/>
-                        <TextField source="name" label="Nome"/>
-                        <TextField source="price" label="Preço unitário"/>
+                        <TextField source="product.name" label="Nome"/>
+                        <TextField source="product.price" label="Preço unitário"/>
                     </Datagrid>
                 </ArrayField>
             </Datagrid>

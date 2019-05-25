@@ -13,6 +13,7 @@ import play.api.libs.json._
 
 import reactivemongo.api.Cursor
 import reactivemongo.api.ReadPreference
+import reactivemongo.bson.{BSONObjectID, BSONDocument}
 
 import play.modules.reactivemongo.{
   MongoController,
@@ -58,5 +59,20 @@ class OrderStoreController @Inject()(components: ControllerComponents, val react
     }.getOrElse(Future.successful(BadRequest("invalid json")))
   }
 
+
+  def findById(id: String) = Action.async {
+    val objId = BSONObjectID.parse(id).get
+
+    def futureOrderStore: Future[Option[OrderStore]] = collection.flatMap(
+      _.find(Json.obj("_id" -> objId)).one[OrderStore])
+
+    futureOrderStore.map { orderStore =>
+      orderStore match {
+        case Some(orderStore) => Ok(Json.toJson(orderStore))
+        case None => NotFound(Json.obj("message" -> "Não existe ordem de compra com este id!"))
+      }
+    }
+
+  }
 
 }
