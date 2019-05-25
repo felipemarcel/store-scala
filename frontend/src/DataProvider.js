@@ -109,7 +109,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
             case CREATE:
                 return {data: {...params.data, id: headers.get('location')}};
             default:
-                return {data: json};
+                return {data: {...json, id: params.id}};
         }
     };
 

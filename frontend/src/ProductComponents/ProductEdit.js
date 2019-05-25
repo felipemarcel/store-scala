@@ -4,7 +4,6 @@ import {
     required,
     SimpleForm,
     TextInput,
-    required,
     NumberInput
 } from 'react-admin';
 

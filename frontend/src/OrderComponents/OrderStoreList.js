@@ -3,7 +3,9 @@ import {
     Datagrid,
     List,
     TextField,
-    ArrayField
+    ArrayField,
+    EditButton,
+    ShowButton
 } from 'react-admin';
 
 
@@ -22,6 +24,8 @@ export const OrderStoreList = ({...props}) => {
                         <TextField source="product.price" label="Preço unitário"/>
                     </Datagrid>
                 </ArrayField>
+                <EditButton/>
+                <ShowButton/>
             </Datagrid>
         </List>
     )

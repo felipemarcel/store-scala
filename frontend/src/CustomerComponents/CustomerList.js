@@ -3,7 +3,8 @@ import {
     Datagrid,
     List,
     TextField,
-    ArrayField
+    EditButton,
+    ShowButton
 } from 'react-admin';
 
 
@@ -16,6 +17,8 @@ export const CustomerList = ({...props}) => {
                 <TextField source="id" label="id"/>
                 <TextField source="firstName" label="Nome"/>
                 <TextField source="lastName" label="Sobrenome"/>
+                <EditButton/>
+                <ShowButton/>
             </Datagrid>
         </List>
     )

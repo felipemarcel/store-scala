@@ -10,6 +10,14 @@ import {OrderStoreList} from "./OrderComponents/OrderStoreList";
 import {CustomerCreate} from "./CustomerComponents/CustomerCreate";
 import {ProductCreate} from "./ProductComponents/ProductCreate";
 import {OrderStoreCreate} from "./OrderComponents/OrderStoreCreate";
+import {CustomerShow} from "./CustomerComponents/CustomerShow";
+import {OrderStoreShow} from "./OrderComponents/OrderShow";
+import {ProductShow} from "./ProductComponents/ProductShow";
+import OrderIcon from '@material-ui/icons/ShoppingCart';
+import CustomerIcon from '@material-ui/icons/Person';
+import {ProductEdit} from "./ProductComponents/ProductEdit";
+import {OrderStoreEdit} from "./OrderComponents/OrderStoreEdit";
+import {CustomerEdit} from "./CustomerComponents/CustomerEdit";
 
 class App extends Component {
     render() {
@@ -21,20 +29,28 @@ class App extends Component {
                 <Resource
                     name="customers"
                     options={{label: "Clientes"}}
+                    icon={CustomerIcon}
                     list={CustomerList}
                     create={CustomerCreate}
+                    show={CustomerShow}
+                    edit={CustomerEdit}
                 />
                 <Resource
                     name="orders"
                     options={{label: "Compras"}}
+                    icon={OrderIcon}
                     list={OrderStoreList}
                     create={OrderStoreCreate}
+                    show={OrderStoreShow}
+                    edit={OrderStoreEdit}
                 />
                 <Resource
                     name="products"
                     options={{label: "Produtos"}}
                     list={ProductList}
                     create={ProductCreate}
+                    show={ProductShow}
+                    edit={ProductEdit}
                 />
             </Admin>
         );
