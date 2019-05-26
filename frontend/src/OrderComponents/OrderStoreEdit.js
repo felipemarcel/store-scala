@@ -7,9 +7,12 @@ import {
     NumberInput
 } from 'react-admin';
 
+import {CustomToolbar} from '../UtilComponents/CustomToolbar';
+import {CustomActions} from "../UtilComponents/CustomActions";
+
 export const OrderStoreEdit = ({...props}) => (
-    <Edit title="Nova compra" {...props}>
-        <SimpleForm>
+    <Edit title="Editar compra" actions={<CustomActions/>} {...props}>
+        <SimpleForm toolbar={<CustomToolbar/>}>
             <TextInput source="name" label="Nome" validate={required()}/>
             <NumberInput source="price" label="Preço" validate={required()}/>
         </SimpleForm>
