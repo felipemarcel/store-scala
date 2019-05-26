@@ -32,6 +32,7 @@ class OrderStoreController @Inject()(components: ControllerComponents, val react
 
   def collection: Future[JSONCollection] = database.map(_.collection[JSONCollection]("orders"))
 
+  // GET /orders
   def index() = Action.async {
     val cursor: Future[Cursor[JsObject]] = collection.map {
       _.find(Json.obj()).
@@ -50,6 +51,8 @@ class OrderStoreController @Inject()(components: ControllerComponents, val react
     }
   }
 
+
+  // POST /orders
   def create = Action.async(parse.json) { request =>
     request.body.validate[OrderStore].map { orderStore =>
       collection.flatMap(_.insert.one(orderStore)).map { lastError =>
@@ -60,19 +63,41 @@ class OrderStoreController @Inject()(components: ControllerComponents, val react
   }
 
 
+  // PUT /orders/:id
+  def update(id: String) = Action.async(parse.json) { request =>
+    request.body.validate[OrderStore].map { body =>
+      findBy(id).map { orderStore =>
+        orderStore match {
+          case Some(orderStore) => {
+            val objectToUpdate = Json.obj("$set" -> body)
+            collection.flatMap(_.update(orderStore, objectToUpdate)).map { lastError =>
+              Logger.debug("Successfully inserted with LastError: $lastError")
+            }
+            Ok(Json.obj("message" -> "Compra alterada com sucesso"))
+          }
+          case None => NotFound(Json.obj("message" -> "Não existe cliente com este id!"))
+        }
+      }
+    }.getOrElse(Future.successful(BadRequest("Foram informados dados inválidos para alteração da compra.")))
+  }
+
+  // GET /orders/:id
   def findById(id: String) = Action.async {
-    val objId = BSONObjectID.parse(id).get
-
-    def futureOrderStore: Future[Option[OrderStore]] = collection.flatMap(
-      _.find(Json.obj("_id" -> objId)).one[OrderStore])
-
-    futureOrderStore.map { orderStore =>
+    findBy(id).map { orderStore =>
       orderStore match {
         case Some(orderStore) => Ok(Json.toJson(orderStore))
         case None => NotFound(Json.obj("message" -> "Não existe ordem de compra com este id!"))
       }
     }
+  }
 
+  def findBy(id: String) = {
+    val objId = BSONObjectID.parse(id).get
+
+    def futureOrderStore: Future[Option[JsObject]] = collection.flatMap(
+      _.find(Json.obj("_id" -> objId)).one[JsObject])
+
+    futureOrderStore
   }
 
 }

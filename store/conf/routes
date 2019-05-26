@@ -12,13 +12,16 @@ GET         /assets/*file         controllers.Assets.versioned(path="/public", f
 
 GET         /customers            controllers.CustomerController.index
 GET         /customers/:id        controllers.CustomerController.findById(id)
+PUT         /customers/:id        controllers.CustomerController.update(id)
 POST        /customers            controllers.CustomerController.create
 
 
 GET         /products             controllers.ProductController.index
 GET         /products/:id         controllers.ProductController.findById(id)
 POST        /products             controllers.ProductController.create
+PUT         /products/:id         controllers.ProductController.update(id)
 
 GET         /orders               controllers.OrderStoreController.index
 POST        /orders               controllers.OrderStoreController.create
 GET         /orders/:id           controllers.OrderStoreController.findById(id)
+PUT         /orders/:id           controllers.OrderStoreController.update(id)
