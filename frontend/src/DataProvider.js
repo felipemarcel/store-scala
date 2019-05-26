@@ -125,7 +125,6 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
             resource,
             params
         );
-        debugger;
         return httpClient(url, options).then(response =>
             convertHTTPResponse(response, type, resource, params)
         ).catch(err => {

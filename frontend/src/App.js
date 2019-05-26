@@ -11,7 +11,7 @@ import {CustomerCreate} from "./CustomerComponents/CustomerCreate";
 import {ProductCreate} from "./ProductComponents/ProductCreate";
 import {OrderStoreCreate} from "./OrderComponents/OrderStoreCreate";
 import {CustomerShow} from "./CustomerComponents/CustomerShow";
-import {OrderStoreShow} from "./OrderComponents/OrderShow";
+import {OrderStoreShow} from "./OrderComponents/OrderStoreShow";
 import {ProductShow} from "./ProductComponents/ProductShow";
 import OrderIcon from '@material-ui/icons/ShoppingCart';
 import CustomerIcon from '@material-ui/icons/Person';
