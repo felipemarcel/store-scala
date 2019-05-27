@@ -31,6 +31,8 @@ const OrderTotalProductsFunction = (record) => (
 export const OrderStoreShow = ({...props}) => (
     <Show title="Informações da compra" {...props}>
         <SimpleShowLayout>
+            <FunctionField label="Estado"
+                           render={record => record.status ? "Pago" : "Em aberto"}/>
             <FunctionField label="Total de unidades" render={OrderTotalFunction}/>
             <FunctionField label="Total da compra" render={OrderTotalProductsFunction}/>
             <ArrayField source="products" sortable={false} label="Produtos">

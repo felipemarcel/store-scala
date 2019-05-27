@@ -18,13 +18,14 @@ import CustomerIcon from '@material-ui/icons/Person';
 import {ProductEdit} from "./ProductComponents/ProductEdit";
 import {OrderStoreEdit} from "./OrderComponents/OrderStoreEdit";
 import {CustomerEdit} from "./CustomerComponents/CustomerEdit";
+import {CONFIG} from "./Config";
 
 class App extends Component {
     render() {
         return (
             <Admin
                 title="Store"
-                dataProvider={dataProvider("http://localhost:9000")}
+                dataProvider={dataProvider(CONFIG.API_URL)}
                 history={history}>
                 <Resource
                     name="customers"

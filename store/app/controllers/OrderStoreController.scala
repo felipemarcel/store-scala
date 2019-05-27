@@ -54,6 +54,7 @@ class OrderStoreController @Inject()(components: ControllerComponents, val react
 
   // POST /orders
   def create = Action.async(parse.json) { request =>
+    println(request.body)
     request.body.validate[OrderStore].map { orderStore =>
       collection.flatMap(_.insert.one(orderStore)).map { lastError =>
         Logger.debug("Successfully inserted with LastError: $lastError")

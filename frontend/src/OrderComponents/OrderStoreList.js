@@ -5,7 +5,8 @@ import {
     TextField,
     ArrayField,
     EditButton,
-    ShowButton
+    ShowButton,
+    FunctionField
 } from 'react-admin';
 import {DisabledPagination} from "../UtilComponents/DisabledPagination";
 
@@ -18,7 +19,8 @@ export const OrderStoreList = ({...props}) => {
               pagination={<DisabledPagination/>}>
             <Datagrid>
                 <TextField source="id" sortable={false} label="id"/>
-                <TextField source="status" sortable={false} label="Estado"/>
+                <FunctionField sortable={false} label="Estado"
+                               render={record => record.status ? "Pago" : "Em aberto"}/>
                 <ArrayField source="products" sortable={false} label="Produtos">
                     <Datagrid>
                         <TextField source="quantity" sortable={false} label="Quantidade"/>

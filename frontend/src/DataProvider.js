@@ -52,7 +52,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 const query = {
                     filter: JSON.stringify({id: params.ids})
                 };
-                url = `${apiUrl}/${resource}?${stringify(query)}`;
+                url = `${apiUrl}/${resource}`;
                 break;
             }
             case GET_MANY_REFERENCE: {
@@ -97,6 +97,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
         const {headers, json} = response;
         switch (type) {
             case GET_LIST:
+            case GET_MANY:
             case GET_MANY_REFERENCE:
                 return {
                     data: json.map(function (r) {
