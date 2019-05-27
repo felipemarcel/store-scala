@@ -13,6 +13,8 @@ import play.api.libs.json._
 
 import reactivemongo.api.Cursor
 import reactivemongo.api.ReadPreference
+import reactivemongo.play.json._
+import reactivemongo.bson.{BSONObjectID, BSONDocument}
 
 import play.modules.reactivemongo.{
   MongoController,
@@ -31,6 +33,7 @@ class CustomerController @Inject()(components: ControllerComponents, val reactiv
 
   def collection: Future[JSONCollection] = database.map(_.collection[JSONCollection]("customers"))
 
+  // GET /customers
   def index() = Action.async {
     val cursor: Future[Cursor[JsObject]] = collection.map {
       _.find(Json.obj()).
@@ -49,13 +52,52 @@ class CustomerController @Inject()(components: ControllerComponents, val reactiv
     }
   }
 
+  // POST /customers
   def create = Action.async(parse.json) { request =>
     request.body.validate[Customer].map { customer =>
       collection.flatMap(_.insert.one(customer)).map { lastError =>
         Logger.debug("Successfully inserted with LastError: $lastError")
         Created
       }
-    }.getOrElse(Future.successful(BadRequest("invalid json")))
+    }.getOrElse(Future.successful(BadRequest("Foram informados dados inválidos para criação de um novo cliente.")))
+  }
+
+  // GET /customers/:id
+  def findById(id: String) = Action.async {
+    findBy(id).map { customer =>
+      customer match {
+        case Some(customer) => Ok(Json.toJson(customer))
+        case None => NotFound(Json.obj("message" -> "Não existe cliente com este id!"))
+      }
+    }
+  }
+
+  // PUT /customers
+  def update(id: String) = Action.async(parse.json) { request =>
+    request.body.validate[Customer].map { body =>
+      findBy(id).map { customer =>
+        customer match {
+          case Some(customer) => {
+            val objectToUpdate = Json.obj("$set" -> body)
+            collection.flatMap(_.update(customer, objectToUpdate)).map { lastError =>
+              Logger.debug("Successfully inserted with LastError: $lastError")
+            }
+            Ok(Json.obj("message" -> "Cliente alterado com sucesso"))
+          }
+          case None => NotFound(Json.obj("message" -> "Não existe cliente com este id!"))
+        }
+      }
+    }.getOrElse(Future.successful(BadRequest("Foram informados dados inválidos para criação de um novo cliente.")))
+  }
+
+  // Auxiliar
+  def findBy(id: String) = {
+    val objId = BSONObjectID.parse(id).get
+
+    def futureCustomer: Future[Option[JsObject]] = collection.flatMap(
+      _.find(Json.obj("_id" -> objId)).one[JsObject])
+
+    futureCustomer
   }
 
 }

@@ -3,25 +3,33 @@ import {
     Datagrid,
     List,
     TextField,
-    ArrayField
+    ArrayField,
+    EditButton,
+    ShowButton,
+    FunctionField
 } from 'react-admin';
+import {DisabledPagination} from "../UtilComponents/DisabledPagination";
 
 
 export const OrderStoreList = ({...props}) => {
     return (
         <List title="Compras"
               {...props}
-              bulkActions={false}>
+              bulkActions={false}
+              pagination={<DisabledPagination/>}>
             <Datagrid>
-                <TextField source="id" label="id"/>
-                <TextField source="status" label="Estado"/>
-                <ArrayField source="products" label="Produtos">
+                <TextField source="id" sortable={false} label="id"/>
+                <FunctionField sortable={false} label="Estado"
+                               render={record => record.status ? "Pago" : "Em aberto"}/>
+                <ArrayField source="products" sortable={false} label="Produtos">
                     <Datagrid>
-                        <TextField source="quantity" label="Quantidade"/>
-                        <TextField source="name" label="Nome"/>
-                        <TextField source="price" label="Preço unitário"/>
+                        <TextField source="quantity" sortable={false} label="Quantidade"/>
+                        <TextField source="product.name" sortable={false} label="Nome"/>
+                        <TextField source="product.price" sortable={false} label="Preço unitário"/>
                     </Datagrid>
                 </ArrayField>
+                <EditButton/>
+                <ShowButton/>
             </Datagrid>
         </List>
     )

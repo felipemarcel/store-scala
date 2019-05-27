@@ -52,7 +52,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
                 const query = {
                     filter: JSON.stringify({id: params.ids})
                 };
-                url = `${apiUrl}/${resource}?${stringify(query)}`;
+                url = `${apiUrl}/${resource}`;
                 break;
             }
             case GET_MANY_REFERENCE: {
@@ -97,6 +97,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
         const {headers, json} = response;
         switch (type) {
             case GET_LIST:
+            case GET_MANY:
             case GET_MANY_REFERENCE:
                 return {
                     data: json.map(function (r) {
@@ -109,7 +110,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
             case CREATE:
                 return {data: {...params.data, id: headers.get('location')}};
             default:
-                return {data: json};
+                return {data: {...json, id: params.id}};
         }
     };
 
@@ -125,7 +126,6 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson) => {
             resource,
             params
         );
-        debugger;
         return httpClient(url, options).then(response =>
             convertHTTPResponse(response, type, resource, params)
         ).catch(err => {
