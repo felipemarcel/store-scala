@@ -8,8 +8,13 @@ lazy val root = (project in file(".")).enablePlugins(PlayScala)
 scalaVersion := "2.12.8"
 
 libraryDependencies += guice
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.2" % Test
+libraryDependencies ++= Seq(
+  jdbc,
+  "org.scalatestplus.play" %% "scalatestplus-play" % "4.0.2" % Test,
+  "org.reactivemongo" %% "play2-reactivemongo" % "0.16.6-play27"
+)
 
+routesGenerator := InjectedRoutesGenerator
 // Adds additional packages into Twirl
 //TwirlKeys.templateImports += "com.felipemarcel.controllers._"
 
